@@ -70,4 +70,5 @@ export const defaultConfiguration: ConfigurationContextValue = {
   title: defaultTitle,
   darkModeLogo: defaultDarkModeLogo,
   lightModeLogo: defaultLightModeLogo,
+  enableGoogleOAuth: import.meta.env.VITE_ENABLE_GOOGLE_OAUTH === "true",
 };
