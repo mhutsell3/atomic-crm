@@ -153,6 +153,31 @@ export type Task = {
   sales_id?: Identifier;
 } & Pick<RaRecord, "id">;
 
+export type ClientKnowledgeFile = {
+  contact_id: Identifier;
+  content: string;
+  sales_id?: Identifier;
+  created_at?: string;
+  updated_at?: string;
+} & Pick<RaRecord, "id">;
+
+export type Recording = {
+  zoom_meeting_uuid: string;
+  topic: string;
+  start_time: string;
+  duration_minutes: number;
+  host_email?: string | null;
+  attendee_emails: string[];
+  transcript?: string | null;
+  summary?: string | null;
+  play_url?: string | null;
+  download_url?: string | null;
+  contact_id?: Identifier | null;
+  sales_id?: Identifier;
+  created_at: string;
+  updated_at: string;
+} & Pick<RaRecord, "id">;
+
 export type ActivityCompanyCreated = {
   type: typeof COMPANY_CREATED;
   company_id: Identifier;

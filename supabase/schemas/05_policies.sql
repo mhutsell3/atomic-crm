@@ -14,6 +14,8 @@ alter table public.tags enable row level security;
 alter table public.tasks enable row level security;
 alter table public.configuration enable row level security;
 alter table public.favicons_excluded_domains enable row level security;
+alter table public.client_knowledge_files enable row level security;
+alter table public.recordings enable row level security;
 
 -- Companies
 create policy "Enable read access for authenticated users" on public.companies for select to authenticated using (true);
@@ -67,3 +69,15 @@ create policy "Enable update for admins" on public.configuration for update to a
 
 -- Favicons excluded domains
 create policy "Enable access for authenticated users only" on public.favicons_excluded_domains to authenticated using (true) with check (true);
+
+-- Client Knowledge Files
+create policy "Enable read access for authenticated users" on public.client_knowledge_files for select to authenticated using (true);
+create policy "Enable insert for authenticated users only" on public.client_knowledge_files for insert to authenticated with check (true);
+create policy "Client Knowledge Files Update Policy" on public.client_knowledge_files for update to authenticated using (true);
+create policy "Client Knowledge Files Delete Policy" on public.client_knowledge_files for delete to authenticated using (true);
+
+-- Recordings
+create policy "Enable read access for authenticated users" on public.recordings for select to authenticated using (true);
+create policy "Enable insert for authenticated users only" on public.recordings for insert to authenticated with check (true);
+create policy "Recordings Update Policy" on public.recordings for update to authenticated using (true);
+create policy "Recordings Delete Policy" on public.recordings for delete to authenticated using (true);

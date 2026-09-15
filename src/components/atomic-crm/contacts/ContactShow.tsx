@@ -27,6 +27,7 @@ import { ContactEditSheet } from "./ContactEditSheet";
 import { ContactStatusSelector } from "./ContactInputs";
 import { ContactPersonalInfo } from "./ContactPersonalInfo";
 import { ContactBackgroundInfo } from "./ContactBackgroundInfo";
+import { ContactKnowledgeFile } from "./ContactKnowledgeFile";
 import { ContactTasksList } from "./ContactTasksList";
 import type { Contact } from "../types";
 import { Avatar } from "./Avatar";
@@ -216,6 +217,13 @@ const ContactShowContentMobile = () => {
                 <Separator />
                 <div className="mt-3">
                   <ContactBackgroundInfo />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Client notes</h3>
+                <Separator />
+                <div className="mt-3">
+                  <ContactKnowledgeFile />
                 </div>
               </div>
               <div>
