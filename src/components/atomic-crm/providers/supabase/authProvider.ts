@@ -102,6 +102,16 @@ export const getAuthProvider = (): AuthProvider => {
         }
         return;
       }
+      if (params.oauthProvider) {
+        const { error } = await getSupabaseClient().auth.signInWithOAuth({
+          provider: params.oauthProvider,
+          options: { redirectTo: window.location.origin },
+        });
+        if (error) {
+          throw error;
+        }
+        return;
+      }
       return baseAuthProvider.login(params);
     },
     logout: async (params) => {
