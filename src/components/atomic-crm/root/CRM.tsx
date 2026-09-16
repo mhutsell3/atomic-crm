@@ -21,6 +21,7 @@ import { Dashboard } from "../dashboard/Dashboard";
 import { MobileDashboard } from "../dashboard/MobileDashboard";
 import deals from "../deals";
 import recordings from "../recordings";
+import sessions from "../sessions";
 import { Layout } from "../layout/Layout";
 import { MobileLayout } from "../layout/MobileLayout";
 import { SignupPage } from "../login/SignupPage";
@@ -278,6 +279,7 @@ const DesktopAdmin = (
       <Resource name="tags" />
       <Resource name="client_knowledge_files" />
       <Resource name="recordings" {...recordings} />
+      <Resource name="sessions" {...sessions} />
     </Admin>
   );
 };

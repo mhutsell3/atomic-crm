@@ -118,6 +118,14 @@ grant all on table public.recordings to anon;
 grant all on table public.recordings to authenticated;
 grant all on table public.recordings to service_role;
 
+grant all on table public.sessions to anon;
+grant all on table public.sessions to authenticated;
+grant all on table public.sessions to service_role;
+
+grant all on table public.client_activities to anon;
+grant all on table public.client_activities to authenticated;
+grant all on table public.client_activities to service_role;
+
 -- View grants
 grant all on table public.activity_log to anon;
 grant all on table public.activity_log to authenticated;
@@ -179,6 +187,14 @@ grant all on sequence public.client_knowledge_files_id_seq to service_role;
 grant all on sequence public.recordings_id_seq to anon;
 grant all on sequence public.recordings_id_seq to authenticated;
 grant all on sequence public.recordings_id_seq to service_role;
+
+grant all on sequence public.sessions_id_seq to anon;
+grant all on sequence public.sessions_id_seq to authenticated;
+grant all on sequence public.sessions_id_seq to service_role;
+
+grant all on sequence public.client_activities_id_seq to anon;
+grant all on sequence public.client_activities_id_seq to authenticated;
+grant all on sequence public.client_activities_id_seq to service_role;
 
 -- Default privileges
 alter default privileges for role postgres in schema public grant all on sequences to postgres;

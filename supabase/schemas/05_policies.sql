@@ -16,6 +16,8 @@ alter table public.configuration enable row level security;
 alter table public.favicons_excluded_domains enable row level security;
 alter table public.client_knowledge_files enable row level security;
 alter table public.recordings enable row level security;
+alter table public.sessions enable row level security;
+alter table public.client_activities enable row level security;
 
 -- Companies
 create policy "Enable read access for authenticated users" on public.companies for select to authenticated using (true);
@@ -81,3 +83,13 @@ create policy "Enable read access for authenticated users" on public.recordings 
 create policy "Enable insert for authenticated users only" on public.recordings for insert to authenticated with check (true);
 create policy "Recordings Update Policy" on public.recordings for update to authenticated using (true);
 create policy "Recordings Delete Policy" on public.recordings for delete to authenticated using (true);
+
+-- Sessions
+create policy "Enable read access for authenticated users" on public.sessions for select to authenticated using (true);
+create policy "Enable insert for authenticated users only" on public.sessions for insert to authenticated with check (true);
+create policy "Sessions Update Policy" on public.sessions for update to authenticated using (true);
+create policy "Sessions Delete Policy" on public.sessions for delete to authenticated using (true);
+
+-- Client Activities
+create policy "Enable read access for authenticated users" on public.client_activities for select to authenticated using (true);
+create policy "Enable insert for authenticated users only" on public.client_activities for insert to authenticated with check (true);

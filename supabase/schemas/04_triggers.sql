@@ -36,6 +36,14 @@ create or replace trigger set_recordings_sales_id_trigger
     before insert on public.recordings
     for each row execute function public.set_sales_id_default();
 
+create or replace trigger set_sessions_sales_id_trigger
+    before insert on public.sessions
+    for each row execute function public.set_sales_id_default();
+
+create or replace trigger set_client_activities_sales_id_trigger
+    before insert on public.client_activities
+    for each row execute function public.set_sales_id_default();
+
 -- Bump updated_at on edit
 create or replace trigger set_client_knowledge_files_updated_at
     before update on public.client_knowledge_files
@@ -43,6 +51,10 @@ create or replace trigger set_client_knowledge_files_updated_at
 
 create or replace trigger set_recordings_updated_at
     before update on public.recordings
+    for each row execute function public.set_updated_at();
+
+create or replace trigger set_sessions_updated_at
+    before update on public.sessions
     for each row execute function public.set_updated_at();
 
 -- Auto-fetch company logo from website favicon on save

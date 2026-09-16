@@ -16,13 +16,15 @@ import {
   CONTACT_NOTE_CREATED,
   DEAL_CREATED,
   DEAL_NOTE_CREATED,
+  CLIENT_ACTIVITY_PREFIX,
 } from "../consts";
-import type { Activity } from "../types";
+import type { Activity, ActivityClientActivityCreated } from "../types";
 import { ActivityLogCompanyCreated } from "./ActivityLogCompanyCreated";
 import { ActivityLogContactCreated } from "./ActivityLogContactCreated";
 import { ActivityLogContactNoteCreated } from "./ActivityLogContactNoteCreated";
 import { ActivityLogDealCreated } from "./ActivityLogDealCreated";
 import { ActivityLogDealNoteCreated } from "./ActivityLogDealNoteCreated";
+import { ActivityLogClientActivity } from "./ActivityLogClientActivity";
 import { InfinitePagination } from "../misc/InfinitePagination";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -124,6 +126,14 @@ function ActivityItem({ activity }: { activity: Activity }) {
 
   if (activity.type === DEAL_NOTE_CREATED) {
     return <ActivityLogDealNoteCreated activity={activity} />;
+  }
+
+  if (activity.type.startsWith(CLIENT_ACTIVITY_PREFIX)) {
+    return (
+      <ActivityLogClientActivity
+        activity={activity as ActivityClientActivityCreated}
+      />
+    );
   }
 
   return null;

@@ -12,6 +12,7 @@ import { ContactPersonalInfo } from "./ContactPersonalInfo";
 import { ContactBackgroundInfo } from "./ContactBackgroundInfo";
 import { ContactKnowledgeFile } from "./ContactKnowledgeFile";
 import { ContactRecordingsList } from "../recordings/ContactRecordingsList";
+import { ContactSessionsList } from "../sessions/ContactSessionsList";
 import { AsideSection } from "../misc/AsideSection";
 import type { Contact } from "../types";
 import { ContactMergeButton } from "./ContactMergeButton";
@@ -61,6 +62,17 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           perPage={50}
         >
           <ContactRecordingsList />
+        </ReferenceManyField>
+      </AsideSection>
+
+      <AsideSection title="Sessions">
+        <ReferenceManyField
+          target="contact_id"
+          reference="sessions"
+          sort={{ field: "scheduled_at", order: "DESC" }}
+          perPage={50}
+        >
+          <ContactSessionsList />
         </ReferenceManyField>
       </AsideSection>
 

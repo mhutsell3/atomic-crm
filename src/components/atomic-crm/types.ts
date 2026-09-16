@@ -161,6 +161,25 @@ export type ClientKnowledgeFile = {
   updated_at?: string;
 } & Pick<RaRecord, "id">;
 
+export type Session = {
+  contact_id: Identifier;
+  scheduled_at: string;
+  duration_minutes: number;
+  status: "SCHEDULED" | "COMPLETED" | "CANCELED" | "NO_SHOW";
+  notes?: string | null;
+  sales_id?: Identifier;
+  created_at?: string;
+  updated_at?: string;
+} & Pick<RaRecord, "id">;
+
+export type ClientActivity = {
+  contact_id?: Identifier | null;
+  sales_id?: Identifier;
+  type: string;
+  description: string;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
 export type Recording = {
   zoom_meeting_uuid: string;
   topic: string;
@@ -216,6 +235,14 @@ export type ActivityDealNoteCreated = {
   date: string;
 };
 
+export type ActivityClientActivityCreated = {
+  type: string;
+  company_id?: Identifier;
+  sales_id?: Identifier;
+  client_activity: ClientActivity;
+  date: string;
+} & Pick<RaRecord, "id">;
+
 export type Activity = RaRecord &
   (
     | ActivityCompanyCreated
@@ -223,6 +250,7 @@ export type Activity = RaRecord &
     | ActivityContactNoteCreated
     | ActivityDealCreated
     | ActivityDealNoteCreated
+    | ActivityClientActivityCreated
   );
 
 export interface RAFile {

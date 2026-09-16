@@ -14,7 +14,8 @@ select
     null::json as contact,
     null::json as deal,
     null::json as contact_note,
-    null::json as deal_note
+    null::json as deal_note,
+    null::json as client_activity
 from public.companies c
 union all
 select
@@ -27,7 +28,8 @@ select
     to_json(co.*) as contact,
     null::json as deal,
     null::json as contact_note,
-    null::json as deal_note
+    null::json as deal_note,
+    null::json as client_activity
 from public.contacts co
 union all
 select
@@ -40,7 +42,8 @@ select
     null::json as contact,
     null::json as deal,
     to_json(cn.*) as contact_note,
-    null::json as deal_note
+    null::json as deal_note,
+    null::json as client_activity
 from public.contact_notes cn
     left join public.contacts co on co.id = cn.contact_id
 union all
@@ -54,7 +57,8 @@ select
     null::json as contact,
     to_json(d.*) as deal,
     null::json as contact_note,
-    null::json as deal_note
+    null::json as deal_note,
+    null::json as client_activity
 from public.deals d
 union all
 select
@@ -67,9 +71,25 @@ select
     null::json as contact,
     null::json as deal,
     null::json as contact_note,
-    to_json(dn.*) as deal_note
+    to_json(dn.*) as deal_note,
+    null::json as client_activity
 from public.deal_notes dn
-    left join public.deals d on d.id = dn.deal_id;
+    left join public.deals d on d.id = dn.deal_id
+union all
+select
+    ('clientActivity.' || ca.id || '.created') as id,
+    'clientActivity.' || ca.type as type,
+    ca.created_at as date,
+    co.company_id,
+    ca.sales_id,
+    null::json as company,
+    null::json as contact,
+    null::json as deal,
+    null::json as contact_note,
+    null::json as deal_note,
+    to_json(ca.*) as client_activity
+from public.client_activities ca
+    left join public.contacts co on co.id = ca.contact_id;
 
 create or replace view public.companies_summary with (security_invoker = on) as
 select
