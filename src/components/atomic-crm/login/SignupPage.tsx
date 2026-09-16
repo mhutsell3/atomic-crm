@@ -18,11 +18,7 @@ import { SSOAuthButton } from "./SSOAuthButton";
 export const SignupPage = () => {
   const queryClient = useQueryClient();
   const dataProvider = useDataProvider<CrmDataProvider>();
-  const {
-    darkModeLogo: logo,
-    title,
-    googleWorkplaceDomain,
-  } = useConfigurationContext();
+  const { title, googleWorkplaceDomain } = useConfigurationContext();
   const navigate = useNavigate();
   const translate = useTranslate();
   const { data: isInitialized, isPending } = useQuery({
@@ -101,19 +97,13 @@ export const SignupPage = () => {
   return (
     <div className="h-screen p-8">
       <div className="flex items-center gap-4">
-        <img
-          src={logo}
-          alt={title}
-          width={24}
-          className="filter brightness-0 invert"
-        />
-        <h1 className="text-xl font-semibold">{title}</h1>
+        <h1 className="text-xl font-semibold text-primary">{title}</h1>
       </div>
       <div className="h-full">
         <div className="max-w-sm mx-auto h-full flex flex-col justify-center gap-4">
           <h1 className="text-2xl font-bold mb-4">
             {translate("crm.auth.welcome_title", {
-              _: "Welcome to Atomic CRM",
+              _: "Welcome to TheoSYN CRM",
             })}
           </h1>
           <p className="text-base mb-4">

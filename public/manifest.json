@@ -1,6 +1,6 @@
 {
-  "short_name": "Atomic CRM",
-  "name": "Atomic CRM",
+  "short_name": "TheoSYN CRM",
+  "name": "TheoSYN CRM",
   "icons": [
     {
       "src": "favicon.ico",
@@ -69,6 +69,6 @@
   "start_url": ".",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#000000",
+  "theme_color": "#1a73e8",
   "background_color": "#ffffff"
 }

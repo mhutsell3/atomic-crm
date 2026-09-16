@@ -11,7 +11,7 @@ import { ImportPage } from "../misc/ImportPage";
 import { ChangelogPage } from "../misc/ChangelogPage";
 
 const Header = () => {
-  const { darkModeLogo, lightModeLogo, title } = useConfigurationContext();
+  const { title } = useConfigurationContext();
   const location = useLocation();
   const translate = useTranslate();
 
@@ -40,17 +40,7 @@ const Header = () => {
                 to="/"
                 className="flex items-center gap-2 text-secondary-foreground no-underline"
               >
-                <img
-                  className="[.light_&]:hidden h-6"
-                  src={darkModeLogo}
-                  alt={title}
-                />
-                <img
-                  className="[.dark_&]:hidden h-6"
-                  src={lightModeLogo}
-                  alt={title}
-                />
-                <h1 className="text-xl font-semibold">{title}</h1>
+                <h1 className="text-xl font-semibold text-primary">{title}</h1>
               </Link>
               <div>
                 <nav className="flex">
