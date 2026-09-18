@@ -279,3 +279,30 @@ export interface ContactGender {
   label: string;
   icon: ComponentType<{ className?: string }>;
 }
+
+export type EmailStatus = "PENDING" | "DRAFTED" | "APPROVED" | "SENT" | "SKIPPED";
+
+export type Email = {
+  gmail_message_id: string;
+  gmail_thread_id: string;
+  from_email: string;
+  from_name?: string | null;
+  subject: string;
+  body_text: string;
+  received_at: string;
+  contact_id?: Identifier | null;
+  draft_content?: string | null;
+  draft_confidence?: number | null;
+  status: EmailStatus;
+  sent_at?: string | null;
+  notion_page_id?: string | null;
+  created_at: string;
+  updated_at: string;
+} & Pick<RaRecord, "id">;
+
+export type EmailAgentConfig = {
+  master_prompt: string;
+  routing_rules: string;
+  style_guide: string;
+  updated_at: string;
+} & Pick<RaRecord, "id">;

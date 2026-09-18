@@ -22,6 +22,9 @@ import { MobileDashboard } from "../dashboard/MobileDashboard";
 import deals from "../deals";
 import recordings from "../recordings";
 import sessions from "../sessions";
+import inbox from "../inbox";
+import { EmailSettingsPage } from "../inbox/EmailSettingsPage";
+import { IntegrationSettingsPage } from "../integrations/IntegrationSettingsPage";
 import { Layout } from "../layout/Layout";
 import { MobileLayout } from "../layout/MobileLayout";
 import { SignupPage } from "../login/SignupPage";
@@ -266,6 +269,14 @@ const DesktopAdmin = (
       <CustomRoutes>
         <Route path={ProfilePage.path} element={<ProfilePage />} />
         <Route path={SettingsPage.path} element={<SettingsPage />} />
+        <Route
+          path={EmailSettingsPage.path}
+          element={<EmailSettingsPage />}
+        />
+        <Route
+          path={IntegrationSettingsPage.path}
+          element={<IntegrationSettingsPage />}
+        />
         <Route path={ImportPage.path} element={<ImportPage />} />
         <Route path={ChangelogPage.path} element={<ChangelogPage />} />
       </CustomRoutes>
@@ -280,6 +291,8 @@ const DesktopAdmin = (
       <Resource name="client_knowledge_files" />
       <Resource name="recordings" {...recordings} />
       <Resource name="sessions" {...sessions} />
+      <Resource name="emails" {...inbox} />
+      <Resource name="email_agent_config" />
     </Admin>
   );
 };

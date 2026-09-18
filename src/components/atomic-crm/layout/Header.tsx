@@ -1,4 +1,12 @@
-import { FileText, Import, Settings, User, Users } from "lucide-react";
+import {
+  FileText,
+  Import,
+  Mail,
+  Plug,
+  Settings,
+  User,
+  Users,
+} from "lucide-react";
 import { CanAccess, useTranslate, useUserMenu } from "ra-core";
 import { Link, matchPath, useLocation } from "react-router";
 import { RefreshButton } from "@/components/admin/refresh-button";
@@ -28,6 +36,8 @@ const Header = () => {
     currentPath = "/recordings";
   } else if (matchPath("/sessions/*", location.pathname)) {
     currentPath = "/sessions";
+  } else if (matchPath("/emails/*", location.pathname)) {
+    currentPath = "/emails";
   } else {
     currentPath = false;
   }
@@ -82,6 +92,11 @@ const Header = () => {
                     to="/sessions"
                     isActive={currentPath === "/sessions"}
                   />
+                  <NavigationTab
+                    label="Inbox"
+                    to="/emails"
+                    isActive={currentPath === "/emails"}
+                  />
                 </nav>
               </div>
               <div className="flex items-center">
@@ -92,8 +107,10 @@ const Header = () => {
                   <CanAccess resource="sales" action="list">
                     <UsersMenu />
                   </CanAccess>
+                  <EmailAgentMenu />
                   <CanAccess resource="configuration" action="edit">
                     <SettingsMenu />
+                    <IntegrationsMenu />
                   </CanAccess>
                   <ImportFromJsonMenuItem />
                   <ChangelogMenuItem />
@@ -118,7 +135,7 @@ const NavigationTab = ({
 }) => (
   <Link
     to={to}
-    className={`px-6 py-3 text-sm font-medium transition-colors border-b-2 ${
+    className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 ${
       isActive
         ? "text-secondary-foreground border-secondary-foreground"
         : "text-secondary-foreground/70 border-transparent hover:text-secondary-foreground/80"
@@ -171,6 +188,36 @@ const SettingsMenu = () => {
       <Link to="/settings" className="flex items-center gap-2">
         <Settings />
         {translate("crm.settings.title")}
+      </Link>
+    </DropdownMenuItem>
+  );
+};
+
+const EmailAgentMenu = () => {
+  const userMenuContext = useUserMenu();
+  if (!userMenuContext) {
+    throw new Error("<EmailAgentMenu> must be used inside <UserMenu>");
+  }
+  return (
+    <DropdownMenuItem asChild onClick={userMenuContext.onClose}>
+      <Link to="/email-settings" className="flex items-center gap-2">
+        <Mail />
+        Email agent
+      </Link>
+    </DropdownMenuItem>
+  );
+};
+
+const IntegrationsMenu = () => {
+  const userMenuContext = useUserMenu();
+  if (!userMenuContext) {
+    throw new Error("<IntegrationsMenu> must be used inside <UserMenu>");
+  }
+  return (
+    <DropdownMenuItem asChild onClick={userMenuContext.onClose}>
+      <Link to="/integrations" className="flex items-center gap-2">
+        <Plug />
+        Integrations (SMS &amp; email)
       </Link>
     </DropdownMenuItem>
   );

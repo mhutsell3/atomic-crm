@@ -211,3 +211,24 @@ alter default privileges for role postgres in schema public grant all on tables 
 alter default privileges for role postgres in schema public grant all on tables to anon;
 alter default privileges for role postgres in schema public grant all on tables to authenticated;
 alter default privileges for role postgres in schema public grant all on tables to service_role;
+
+grant all on table public.emails to anon;
+grant all on table public.emails to authenticated;
+grant all on table public.emails to service_role;
+
+grant all on table public.email_agent_config to anon;
+grant all on table public.email_agent_config to authenticated;
+grant all on table public.email_agent_config to service_role;
+
+grant all on sequence public.emails_id_seq to anon;
+grant all on sequence public.emails_id_seq to authenticated;
+grant all on sequence public.emails_id_seq to service_role;
+
+-- Integration settings hold encrypted secrets: keep them out of the API entirely.
+revoke all on table public.integration_settings from anon;
+revoke all on table public.integration_settings from authenticated;
+revoke all on table public.integration_settings from service_role;
+
+-- Inbox mail and agent settings are private: nothing needs anonymous access.
+revoke all on table public.emails from anon;
+revoke all on table public.email_agent_config from anon;

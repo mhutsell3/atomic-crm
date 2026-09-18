@@ -93,3 +93,19 @@ create policy "Sessions Delete Policy" on public.sessions for delete to authenti
 -- Client Activities
 create policy "Enable read access for authenticated users" on public.client_activities for select to authenticated using (true);
 create policy "Enable insert for authenticated users only" on public.client_activities for insert to authenticated with check (true);
+
+alter table public.emails enable row level security;
+alter table public.email_agent_config enable row level security;
+
+-- Emails: only ever inserted by the integrations server (which bypasses RLS)
+create policy "Enable read access for authenticated users" on public.emails for select to authenticated using (true);
+create policy "Emails Update Policy" on public.emails for update to authenticated using (true);
+create policy "Emails Delete Policy" on public.emails for delete to authenticated using (true);
+
+-- Email agent config (singleton row seeded in 01_tables.sql)
+create policy "Enable read access for authenticated users" on public.email_agent_config for select to authenticated using (true);
+create policy "Email Agent Config Update Policy" on public.email_agent_config for update to authenticated using (true);
+
+-- Integration settings: RLS on with NO policies = no access for API roles. Only the
+-- integrations server (a bypassrls login role) touches this table.
+alter table public.integration_settings enable row level security;
