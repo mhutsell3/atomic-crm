@@ -14,11 +14,12 @@ import { LoginSkeleton } from "./LoginSkeleton";
 import { Notification } from "@/components/admin/notification";
 import { ConfirmationRequired } from "./ConfirmationRequired";
 import { SSOAuthButton } from "./SSOAuthButton";
+import { googleWorkplaceDomain } from "./authConfig";
 
 export const SignupPage = () => {
   const queryClient = useQueryClient();
   const dataProvider = useDataProvider<CrmDataProvider>();
-  const { title, googleWorkplaceDomain } = useConfigurationContext();
+  const { title } = useConfigurationContext();
   const navigate = useNavigate();
   const translate = useTranslate();
   const { data: isInitialized, isPending } = useQuery({

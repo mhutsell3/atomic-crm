@@ -91,7 +91,8 @@ export type CRMProps = {
  * @param {string[]} dealPipelineStatuses - The statuses of deals in the pipeline used in the application.
  * @param {DealStage[]} dealStages - The stages of deals used in the application.
  * @param {RaThemeOptions} lightTheme - The theme to use when the application is in light mode.
- * @param {string} logo - The logo used in the CRM application.
+ * @param {string} darkModeLogo - Logo shown in dark mode and on the auth pages. Must be an imported asset, an absolute URL, or a data URI — never a route-relative path like "./logos/x.svg", which breaks on nested routes such as /oauth/consent (issue #291).
+ * @param {string} lightModeLogo - Logo shown in light mode. Same rule as darkModeLogo: imported asset, absolute URL, or data URI only.
  * @param {NoteStatus[]} noteStatuses - The statuses of notes used in the application.
  * @param {LabeledValue[]} taskTypes - The types of tasks used in the application.
  * @param {string} title - The title of the CRM application.
@@ -104,7 +105,8 @@ export type CRMProps = {
  *
  * const App = () => (
  *     <CRM
- *         logo="/path/to/logo.png"
+ *         darkModeLogo="https://example.com/logo-dark.svg"
+ *         lightModeLogo="https://example.com/logo-light.svg"
  *         title="My Custom CRM"
  *         lightTheme={{
  *             ...defaultTheme,
@@ -132,10 +134,6 @@ export const CRM = ({
   authProvider = defaultAuthProviderBuilder(),
   i18nProvider = defaulti18nProvider,
   store = defaultStore,
-  googleWorkplaceDomain = import.meta.env.VITE_GOOGLE_WORKPLACE_DOMAIN,
-  disableEmailPasswordAuthentication = import.meta.env
-    .VITE_DISABLE_EMAIL_PASSWORD_AUTHENTICATION === "true",
-  enableGoogleOAuth = import.meta.env.VITE_ENABLE_GOOGLE_OAUTH === "true",
   disableTelemetry,
   ...rest
 }: CRMProps) => {
@@ -168,9 +166,6 @@ export const CRM = ({
         title,
         darkModeLogo,
         lightModeLogo,
-        googleWorkplaceDomain,
-        disableEmailPasswordAuthentication,
-        enableGoogleOAuth,
       } satisfies ConfigurationContextValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

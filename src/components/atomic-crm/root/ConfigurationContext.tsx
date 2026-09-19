@@ -17,9 +17,6 @@ export interface ConfigurationContextValue {
   title: string;
   darkModeLogo: string;
   lightModeLogo: string;
-  googleWorkplaceDomain?: string;
-  disableEmailPasswordAuthentication?: boolean;
-  enableGoogleOAuth?: boolean;
 }
 
 export const useConfigurationContext = () => {
