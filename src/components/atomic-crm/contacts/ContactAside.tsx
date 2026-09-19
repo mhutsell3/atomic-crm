@@ -13,6 +13,10 @@ import { ContactBackgroundInfo } from "./ContactBackgroundInfo";
 import { ContactKnowledgeFile } from "./ContactKnowledgeFile";
 import { ContactRecordingsList } from "../recordings/ContactRecordingsList";
 import { ContactSessionsList } from "../sessions/ContactSessionsList";
+import {
+  ContactPaymentsList,
+  ContactSubscriptionsList,
+} from "../billing/ContactBilling";
 import { AsideSection } from "../misc/AsideSection";
 import type { Contact } from "../types";
 import { ContactMergeButton } from "./ContactMergeButton";
@@ -73,6 +77,28 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           perPage={50}
         >
           <ContactSessionsList />
+        </ReferenceManyField>
+      </AsideSection>
+
+      <AsideSection title="Payments">
+        <ReferenceManyField
+          target="contact_id"
+          reference="payments"
+          sort={{ field: "paid_at", order: "DESC" }}
+          perPage={50}
+        >
+          <ContactPaymentsList />
+        </ReferenceManyField>
+      </AsideSection>
+
+      <AsideSection title="Subscriptions">
+        <ReferenceManyField
+          target="contact_id"
+          reference="subscriptions"
+          sort={{ field: "created_at", order: "DESC" }}
+          perPage={50}
+        >
+          <ContactSubscriptionsList />
         </ReferenceManyField>
       </AsideSection>
 

@@ -468,3 +468,18 @@ BEGIN
   RETURN NEW;
 END;
 $$;
+
+create or replace function public.restrict_billing_update()
+returns trigger
+language plpgsql
+as $$
+declare
+    chosen_contact_id bigint := new.contact_id;
+begin
+    if current_user = 'authenticated' then
+        new := old;
+        new.contact_id := chosen_contact_id;
+    end if;
+    return new;
+end;
+$$;

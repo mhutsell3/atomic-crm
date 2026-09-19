@@ -109,3 +109,14 @@ create policy "Email Agent Config Update Policy" on public.email_agent_config fo
 -- Integration settings: RLS on with NO policies = no access for API roles. Only the
 -- integrations server (a bypassrls login role) touches this table.
 alter table public.integration_settings enable row level security;
+
+alter table public.payments enable row level security;
+alter table public.subscriptions enable row level security;
+
+-- Rows are only ever inserted by the integrations server (which bypasses RLS); no insert or
+-- delete policy exists for signed-in users.
+create policy "Enable read access for authenticated users" on public.payments for select to authenticated using (true);
+create policy "Payments Update Policy" on public.payments for update to authenticated using (true);
+
+create policy "Enable read access for authenticated users" on public.subscriptions for select to authenticated using (true);
+create policy "Subscriptions Update Policy" on public.subscriptions for update to authenticated using (true);

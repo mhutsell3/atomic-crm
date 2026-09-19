@@ -200,6 +200,46 @@ export type Recording = {
   updated_at: string;
 } & Pick<RaRecord, "id">;
 
+export type PaymentStatus = "SUCCEEDED" | "FAILED" | "REFUNDED";
+
+export type Payment = {
+  stripe_payment_id: string;
+  stripe_payment_intent_id?: string | null;
+  stripe_customer_id: string;
+  customer_email?: string | null;
+  contact_id?: Identifier | null;
+  amount_cents: number;
+  currency: string;
+  status: PaymentStatus;
+  description?: string | null;
+  paid_at?: string | null;
+  created_at: string;
+  updated_at: string;
+} & Pick<RaRecord, "id">;
+
+export type SubscriptionStatus =
+  | "TRIALING"
+  | "ACTIVE"
+  | "PAST_DUE"
+  | "CANCELED"
+  | "UNPAID";
+
+export type Subscription = {
+  stripe_subscription_id: string;
+  stripe_customer_id: string;
+  customer_email?: string | null;
+  contact_id?: Identifier | null;
+  status: SubscriptionStatus;
+  plan_name?: string | null;
+  amount_cents?: number | null;
+  currency: string;
+  current_period_start?: string | null;
+  current_period_end?: string | null;
+  canceled_at?: string | null;
+  created_at: string;
+  updated_at: string;
+} & Pick<RaRecord, "id">;
+
 export type ActivityCompanyCreated = {
   type: typeof COMPANY_CREATED;
   company_id: Identifier;

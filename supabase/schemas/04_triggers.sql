@@ -119,3 +119,19 @@ create or replace trigger set_email_agent_config_updated_at
 create or replace trigger set_integration_settings_updated_at
     before update on public.integration_settings
     for each row execute function public.set_updated_at();
+
+create or replace trigger "00_restrict_payments_update"
+    before update on public.payments
+    for each row execute function public.restrict_billing_update();
+
+create or replace trigger "00_restrict_subscriptions_update"
+    before update on public.subscriptions
+    for each row execute function public.restrict_billing_update();
+
+create or replace trigger set_payments_updated_at
+    before update on public.payments
+    for each row execute function public.set_updated_at();
+
+create or replace trigger set_subscriptions_updated_at
+    before update on public.subscriptions
+    for each row execute function public.set_updated_at();

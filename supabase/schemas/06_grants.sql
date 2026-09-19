@@ -232,3 +232,10 @@ revoke all on table public.integration_settings from service_role;
 -- Inbox mail and agent settings are private: nothing needs anonymous access.
 revoke all on table public.emails from anon;
 revoke all on table public.email_agent_config from anon;
+
+-- Financial records are private: no anonymous access, and users can read and reassign but not
+-- create or delete.
+grant select, update on table public.payments to authenticated;
+grant all on table public.payments to service_role;
+grant select, update on table public.subscriptions to authenticated;
+grant all on table public.subscriptions to service_role;

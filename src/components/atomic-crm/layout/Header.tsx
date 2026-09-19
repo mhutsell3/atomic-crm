@@ -36,6 +36,10 @@ const Header = () => {
     currentPath = "/recordings";
   } else if (matchPath("/sessions/*", location.pathname)) {
     currentPath = "/sessions";
+  } else if (matchPath("/payments/*", location.pathname)) {
+    currentPath = "/payments";
+  } else if (matchPath("/subscriptions/*", location.pathname)) {
+    currentPath = "/subscriptions";
   } else if (matchPath("/emails/*", location.pathname)) {
     currentPath = "/emails";
   } else {
@@ -91,6 +95,16 @@ const Header = () => {
                     label="Sessions"
                     to="/sessions"
                     isActive={currentPath === "/sessions"}
+                  />
+                  <NavigationTab
+                    label="Payments"
+                    to="/payments"
+                    isActive={currentPath === "/payments"}
+                  />
+                  <NavigationTab
+                    label="Subscriptions"
+                    to="/subscriptions"
+                    isActive={currentPath === "/subscriptions"}
                   />
                   <NavigationTab
                     label="Inbox"

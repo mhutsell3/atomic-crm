@@ -23,6 +23,7 @@ import deals from "../deals";
 import recordings from "../recordings";
 import sessions from "../sessions";
 import inbox from "../inbox";
+import { payments, subscriptions } from "../billing";
 import { EmailSettingsPage } from "../inbox/EmailSettingsPage";
 import { IntegrationSettingsPage } from "../integrations/IntegrationSettingsPage";
 import { Layout } from "../layout/Layout";
@@ -286,6 +287,8 @@ const DesktopAdmin = (
       <Resource name="client_knowledge_files" />
       <Resource name="recordings" {...recordings} />
       <Resource name="sessions" {...sessions} />
+      <Resource name="payments" {...payments} />
+      <Resource name="subscriptions" {...subscriptions} />
       <Resource name="emails" {...inbox} />
       <Resource name="email_agent_config" />
     </Admin>
