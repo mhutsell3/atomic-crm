@@ -6,9 +6,15 @@ import { createErrorResponse } from "./utils.ts";
 const SUPABASE_JWT_ISSUER =
   Deno.env.get("SB_JWT_ISSUER") ?? Deno.env.get("SUPABASE_URL") + "/auth/v1";
 
-const SUPABASE_JWT_KEYS = jose.createRemoteJWKSet(
-  new URL(Deno.env.get("SUPABASE_URL")! + "/auth/v1/.well-known/jwks.json"),
-);
+// Self-hosted Supabase Auth signs tokens with a shared HS256 secret and has no JWKS to fetch
+// (the hosted/CLI stack uses asymmetric keys). When SB_JWT_SECRET is set we verify against it.
+const SUPABASE_JWT_SECRET = Deno.env.get("SB_JWT_SECRET");
+
+const SUPABASE_JWT_KEYS = SUPABASE_JWT_SECRET
+  ? undefined
+  : jose.createRemoteJWKSet(
+      new URL(Deno.env.get("SUPABASE_URL")! + "/auth/v1/.well-known/jwks.json"),
+    );
 
 function getAuthToken(req: Request) {
   const authHeader = req.headers.get("authorization");
@@ -23,8 +29,22 @@ function getAuthToken(req: Request) {
   return token;
 }
 
-function verifySupabaseJWT(jwt: string) {
-  return jose.jwtVerify(jwt, SUPABASE_JWT_KEYS, {
+async function verifySupabaseJWT(jwt: string) {
+  if (SUPABASE_JWT_SECRET) {
+    const result = await jose.jwtVerify(
+      jwt,
+      new TextEncoder().encode(SUPABASE_JWT_SECRET),
+      { algorithms: ["HS256"] },
+    );
+    // The project's public anon/service_role API keys are signed with the same secret. Only a
+    // signed-in user's session token may call these functions.
+    if (result.payload.role !== "authenticated") {
+      throw new Error("Not a user session token");
+    }
+    return result;
+  }
+
+  return jose.jwtVerify(jwt, SUPABASE_JWT_KEYS!, {
     issuer: SUPABASE_JWT_ISSUER,
   });
 }

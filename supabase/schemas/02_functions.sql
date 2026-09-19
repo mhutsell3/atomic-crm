@@ -32,18 +32,22 @@ CREATE OR REPLACE FUNCTION "public"."cleanup_note_attachments"() RETURNS "trigge
         'type', TG_OP
       );
 
-      PERFORM net.http_post(
-        url := public.get_note_attachments_function_url(),
-        body := payload,
-        params := '{}'::jsonb,
-        headers := jsonb_build_object(
-          'Content-Type',
-          'application/json',
-          'Authorization',
-          auth_header
-        ),
-        timeout_milliseconds := 10000
-      );
+      BEGIN
+        PERFORM net.http_post(
+          url := public.get_note_attachments_function_url(),
+          body := payload,
+          params := '{}'::jsonb,
+          headers := jsonb_build_object(
+            'Content-Type',
+            'application/json',
+            'Authorization',
+            auth_header
+          ),
+          timeout_milliseconds := 10000
+        );
+      EXCEPTION WHEN OTHERS THEN
+        RAISE WARNING 'cleanup_note_attachments: storage cleanup skipped (%)', SQLERRM;
+      END;
 
       IF TG_OP = 'DELETE' THEN
         RETURN OLD;
