@@ -272,7 +272,9 @@ CREATE OR REPLACE FUNCTION "public"."is_admin"() RETURNS boolean
     AS $$
 begin
   return exists (
-    select 1 from public.sales where user_id = auth.uid() and administrator = true
+    select 1 from public.sales
+    where user_id = (nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub')::uuid
+      and administrator = true
   );
 end;
 $$;
