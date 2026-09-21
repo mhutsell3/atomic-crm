@@ -454,7 +454,8 @@ CREATE OR REPLACE FUNCTION "public"."set_sales_id_default"() RETURNS "trigger"
     AS $$
 BEGIN
   IF NEW.sales_id IS NULL THEN
-    SELECT id INTO NEW.sales_id FROM sales WHERE user_id = auth.uid();
+    SELECT id INTO NEW.sales_id FROM sales
+    WHERE user_id = (nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub')::uuid;
   END IF;
   RETURN NEW;
 END;
