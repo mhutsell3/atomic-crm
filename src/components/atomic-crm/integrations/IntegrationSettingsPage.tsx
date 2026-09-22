@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCanAccess, useNotify } from "ra-core";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,14 +21,18 @@ type IntegrationSettings = {
   mailgunFromAddress: string | null;
   emailRemindersEnabled: boolean;
   hasMailgunApiKey: boolean;
+  hasStripeSecretKey: boolean;
+  hasStripeWebhookSecret: boolean;
+  stripeMode: "test" | "live" | null;
 };
 
 const QUERY_KEY = ["integration-settings"];
 
 /**
- * Twilio (SMS) and Mailgun (email) configuration. Configuration only: nothing in the CRM sends a
- * text or an email through these yet. Administrators only - enforced by the server on every
- * request; hiding the page here is just for tidiness.
+ * Twilio (SMS), Mailgun (email) and Stripe (payments) configuration. Twilio/Mailgun are
+ * configuration only - nothing sends through them yet; Stripe is live once its keys are set.
+ * Administrators only - enforced by the server on every request; hiding the page here is just
+ * for tidiness.
  */
 export const IntegrationSettingsPage = () => {
   const { canAccess, isPending } = useCanAccess({
@@ -65,6 +70,8 @@ const IntegrationSettingsForm = () => {
   const [domain, setDomain] = useState("");
   const [fromAddress, setFromAddress] = useState("");
   const [apiKey, setApiKey] = useState("");
+  const [stripeSecretKey, setStripeSecretKey] = useState("");
+  const [stripeWebhookSecret, setStripeWebhookSecret] = useState("");
 
   useEffect(() => {
     if (!data) return;
@@ -90,12 +97,16 @@ const IntegrationSettingsForm = () => {
           // Blank = keep the saved secret.
           twilioAuthToken: authToken,
           mailgunApiKey: apiKey,
+          stripeSecretKey,
+          stripeWebhookSecret,
         }),
       }),
     onSuccess: (saved) => {
       queryClient.setQueryData(QUERY_KEY, saved);
       setAuthToken("");
       setApiKey("");
+      setStripeSecretKey("");
+      setStripeWebhookSecret("");
       notify("Integration settings saved", { type: "success" });
     },
     onError: (err) => {
@@ -132,8 +143,9 @@ const IntegrationSettingsForm = () => {
       className="max-w-3xl w-full mx-auto mt-8 mb-16 flex flex-col gap-6"
     >
       <p className="text-sm text-muted-foreground">
-        Configuration only — no texts or emails are sent through these yet.
-        Credentials are encrypted when saved and are never shown again.
+        SMS and email reminders are configuration only — nothing sends
+        through them yet. Stripe is live once configured. Credentials are
+        encrypted when saved and are never shown again.
       </p>
 
       <Card>
@@ -218,6 +230,52 @@ const IntegrationSettingsForm = () => {
               autoComplete="new-password"
               placeholder={
                 data.hasMailgunApiKey ? "Set — leave blank to keep it" : ""
+              }
+            />
+          </Field>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Payments (Stripe)</CardTitle>
+            {data.stripeMode && (
+              <Badge variant={data.stripeMode === "live" ? "default" : "outline"}>
+                {data.stripeMode === "live" ? "Live mode" : "Test mode"}
+              </Badge>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <p className="text-sm text-muted-foreground">
+            Once both keys are set, payments and subscription changes from
+            your Stripe webhook are recorded automatically and matched to
+            clients by email.
+          </p>
+          <Field label="Secret key" id="stripe-secret-key">
+            <Input
+              id="stripe-secret-key"
+              type="password"
+              value={stripeSecretKey}
+              onChange={(e) => setStripeSecretKey(e.target.value)}
+              autoComplete="new-password"
+              placeholder={
+                data.hasStripeSecretKey ? "Set — leave blank to keep it" : "sk_…"
+              }
+            />
+          </Field>
+          <Field label="Webhook signing secret" id="stripe-webhook-secret">
+            <Input
+              id="stripe-webhook-secret"
+              type="password"
+              value={stripeWebhookSecret}
+              onChange={(e) => setStripeWebhookSecret(e.target.value)}
+              autoComplete="new-password"
+              placeholder={
+                data.hasStripeWebhookSecret
+                  ? "Set — leave blank to keep it"
+                  : "whsec_…"
               }
             />
           </Field>

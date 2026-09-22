@@ -313,8 +313,9 @@ create table public.email_agent_config (
 insert into public.email_agent_config (id) values (1);
 
 --
--- Integration settings (Twilio/Mailgun). Configuration only - nothing sends yet.
--- Never exposed to PostgREST; see 05_policies.sql / 06_grants.sql.
+-- Integration settings (Twilio/Mailgun/Stripe). Twilio/Mailgun are configuration only - nothing
+-- sends yet. Stripe is live: once its keys are set, the integrations server's webhook records
+-- real payments and subscriptions. Never exposed to PostgREST; see 05_policies.sql / 06_grants.sql.
 --
 
 create table public.integration_settings (
@@ -327,6 +328,8 @@ create table public.integration_settings (
     mailgun_domain text,
     mailgun_from_address text,
     email_reminders_enabled boolean not null default false,
+    stripe_secret_key_cipher text,
+    stripe_webhook_secret_cipher text,
     updated_at timestamp with time zone not null default now(),
     constraint integration_settings_singleton check (id = 1)
 );
